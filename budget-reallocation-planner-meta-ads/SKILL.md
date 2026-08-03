@@ -69,6 +69,30 @@ Required columns where available:
 4. Check whether losers are true losers or still inside learning / lag.
 5. Build a reallocation plan with monitoring and rollback triggers.
 
+When the export is a long CSV, run `../scripts/classify_budget.py` to compute the classification table deterministically instead of estimating the arithmetic.
+
+## Decision rules
+
+Every threshold below is a starting heuristic, not a Meta rule. Recalibrate against the account's own history, and say which threshold you adjusted and why.
+
+Classification criteria:
+
+| Class | Criteria (all must hold) |
+|---|---|
+| Scale candidate | CPA at least 15% below target (or ROAS 15% above) sustained for 14+ days, with 30+ conversions in the window, learning complete, no major edit in the last 72h [heuristic] |
+| Hold | Within +/-15% of target, or fewer than 30 conversions in the window regardless of CPA [heuristic] |
+| Reduce candidate | CPA 25-50% above target with 30+ conversions, after the conversion lag window has closed [heuristic] |
+| Pause candidate | Spend of 3x target CPA or more with zero conversions after the lag window, or CPA more than 2x target with 20+ conversions [heuristic] |
+| Needs more data | Fewer than 30 conversions in the window, still in learning, or a major edit inside the last 72h |
+
+Movement rules:
+
+- Maximum change per step: +/-20% of the current budget [heuristic]. Larger jumps re-enter learning and make the next read ambiguous.
+- One budget change per campaign per 72 hours. Wait at least one full conversion-lag window before judging the effect.
+- Do not scale and restructure in the same step. One variable at a time.
+- Rollback trigger: CPA more than 20% above target for 3 consecutive days after a change reverts the change [heuristic].
+- If reported conversions and CRM quality disagree, rank on the CRM-verified number and label the Meta number as volume, not value.
+
 ## Output format
 
 ### Budget verdict
@@ -86,7 +110,11 @@ Step-by-step plan with order of changes.
 
 ### Rollback rules
 
-When to revert or stop.
+When to revert or stop, with the numeric trigger for each change.
+
+### Missing data
+
+Exports or fields that would change confidence, and which classification they would firm up.
 
 ## Practical example
 

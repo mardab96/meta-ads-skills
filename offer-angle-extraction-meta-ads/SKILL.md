@@ -73,6 +73,21 @@ Optional:
 4. Identify winning and losing hypotheses.
 5. Suggest next tests based on what the evidence supports.
 
+## Decision rules
+
+Every threshold is a starting heuristic; recalibrate to the account and say which threshold you adjusted.
+
+Verdict floors - an angle family gets a verdict only above these:
+
+- At least 3x target CPA in spend AND 10+ conversions across the family [heuristic]. Below that, the verdict column says "insufficient data", not a lean.
+- "Winner" requires the family to beat the account's blended CPA / ROAS by 20%+ at those floors [heuristic]. Within +/-20% is "comparable", which is also a finding.
+- CTR-only winners are labeled "attention winner, conversion unproven" - never just "winner".
+
+Confounded comparison rule:
+
+- If an angle family runs only in one audience or one campaign type while others run elsewhere, the comparison is confounded. Say so, cap confidence at low, and recommend the isolating test instead of a verdict.
+- When lead quality notes exist, a family can lose on CPA and still win on qualified CPA; state both numbers and rank on the qualified one.
+
 ## Output format
 
 ### Angle map
@@ -91,6 +106,10 @@ What the account appears to be testing.
 ### Landing page implications
 
 What the landing page should clarify or support.
+
+### Missing data
+
+What blocks a verdict per family (spend below floor, no conversion split, no quality notes), stated per angle.
 
 ## Practical example
 

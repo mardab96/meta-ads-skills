@@ -67,6 +67,28 @@ Optional:
 5. Distinguish low-quality traffic from low-volume uncertainty.
 6. Recommend monitor, adapt creative, test exclusion, or no action.
 
+For long breakdown CSVs, run `../scripts/placement_index.py` to compute spend share vs outcome share and the volume gate deterministically.
+
+## Decision rules
+
+Every threshold is a starting heuristic; recalibrate to the account and say which threshold you adjusted.
+
+Volume gate first - "tiny spend" has a number:
+
+- A placement gets a verdict only with at least 5% of spend or 10 conversions in the window [heuristic]. Below that it is marked "insufficient data" automatically, never judged.
+
+When an exclusion test IS justified (the positive rule, not just the negations):
+
+- CPA above 2x the blended account CPA at 10+ conversions, after a placement-adapted creative has been tried or ruled out [heuristic], OR
+- Material spend (10%+ share) with zero conversions after the conversion lag window closed, OR
+- Outcome share less than a third of spend share sustained across two consecutive windows [heuristic].
+
+When it is NOT an exclusion case:
+
+- High CTR + low CVR points at intent or landing page mismatch: test placement-specific creative or the landing page first.
+- Low CPM alone is never a reason to keep a placement; low CPA on the business KPI is.
+- Under Advantage+ placements, name the tradeoff: excluding placements constrains delivery optimization; recommend it only with the evidence above.
+
 ## Output format
 
 ### Placement verdict

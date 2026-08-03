@@ -2,7 +2,7 @@
 
 A pack of 10 production-ready Claude Skills that help performance marketers run rigorous Meta Ads diagnostics from exports: account health, creative fatigue, Advantage+ diagnosis, Pixel and Conversions API signal quality, budget reallocation, placement breakdowns, campaign structure, offer-angle extraction, comment mining, and weekly readouts.
 
-Each skill is a self-contained `SKILL.md` with explicit triggers, required inputs, analysis workflow, decision rules, a practical example, output format, and guardrails. Drop them into Claude Code and they activate automatically when their use case matches the conversation.
+Each skill is a self-contained `SKILL.md` with explicit triggers, required inputs, analysis workflow, decision rules with unit-carrying thresholds (every threshold labeled as a heuristic to recalibrate per account), a practical example, output format, and guardrails. Four number-heavy skills additionally ship a deterministic helper in `scripts/` (budget classification, week-over-week deltas, fatigue trends, placement efficiency), so the arithmetic on long CSVs is computed, not eyeballed. Drop them into Claude Code and they activate automatically when their use case matches the conversation.
 
 These skills are intentionally conservative. They work with Meta Ads exports today. If you later connect Meta Ads through MCP or another data layer, the same workflows can use live tools, but the default design does not require write access or campaign mutation.
 
@@ -32,8 +32,10 @@ These skills are intentionally conservative. They work with Meta Ads exports tod
 ```bash
 git clone https://github.com/mardab96/meta-ads-skills.git
 mkdir -p ~/.claude/skills
-cp -r meta-ads-skills/*-meta-ads ~/.claude/skills/
+cp -r meta-ads-skills/*-meta-ads meta-ads-skills/scripts ~/.claude/skills/
 ```
+
+The `scripts/` folder ships the deterministic helpers four skills call via relative paths; the command above keeps those paths working.
 
 ### Option B - Other Claude environments
 

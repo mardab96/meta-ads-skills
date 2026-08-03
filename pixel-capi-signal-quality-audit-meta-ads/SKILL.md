@@ -59,6 +59,32 @@ Recommended additional data:
 5. Identify campaign risks created by weak signals.
 6. Produce a tracking QA action list for a human or developer.
 
+## Decision rules
+
+Every threshold is a starting heuristic, not a Meta rule. Recalibrate to the account and say which threshold you adjusted.
+
+Verdict rubric - the three states have criteria, not vibes:
+
+| Verdict | Criteria |
+|---|---|
+| Ready to scale | EMQ 6.0+ on the optimization event [heuristic], deduplication verified (not just configured), optimization event at roughly 50+ conversions per week per ad set [heuristic tied to learning], and the event matches what the business values |
+| Needs review | EMQ 4.0-6.0, OR only one source (browser-only or server-only) active, OR dedup configured but unverified, OR event volume between 20 and 50 per week |
+| Not ready | EMQ below 4.0, OR both sources firing the same event with dedup unverified, OR optimization event under ~20 conversions per week, OR the optimized event is not what the business values (e.g. Lead optimized, 18% qualify) |
+
+Deduplication verification procedure (configured is not verified):
+
+1. Confirm the same `event_id` is sent on the browser and server copy of the same event.
+2. In Events Manager, confirm the event shows a deduplicated count, not two separate totals.
+3. Compare browser and server event counts over the same window: a healthy overlap band is roughly 60-90% [heuristic]; near 0% overlap means dedup keys never match, near 100% single-source means one channel is dead.
+
+Signal-vs-business rule: a technically clean event that does not represent value (unqualified leads, add-to-carts optimized as purchases) caps the verdict at "needs review" regardless of EMQ.
+
+### Vertical notes
+
+- Ecommerce: purchase events need value and currency parameters checked, not just presence; wrong value feeds break ROAS bidding silently.
+- Lead gen: the deeper-event tradeoff (qualified lead vs raw lead) trades volume against quality; below ~20 qualified events per week the deeper event may starve learning [heuristic].
+- App: web Pixel rules do not transfer; SKAN / AEM has its own volume and delay constraints.
+
 ## Output format
 
 ### Signal verdict
@@ -79,13 +105,17 @@ Ready to scale, needs review, or not ready.
 
 Concrete checks for the tracking owner.
 
+### Missing data
+
+What was not visible with the provided input (screenshots cover less than exports), and which verdict criteria it blocks.
+
 ## Practical example
 
 User provides Events Manager screenshots. Claude finds Lead events from Pixel and CAPI both active, but deduplication is unclear. Campaigns optimize for Lead while CRM notes say only 18% are qualified. Output separates "possible deduplication risk" from "business signal mismatch" and recommends validating event IDs plus testing a deeper qualified-lead signal before scaling.
 
 ## Guardrails
 
-- Do not tell Claude to edit tracking.
+- Do not edit tracking. Produce a QA list for the tracking owner.
 - Do not assume CAPI is correct because it exists.
 - Do not recommend scaling before signal quality is understood.
 - Do not claim Pixel and CAPI should match exactly.

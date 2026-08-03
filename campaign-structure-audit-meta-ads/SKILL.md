@@ -27,6 +27,20 @@ Minimum useful data:
 - Geography and placement settings where available.
 - Conversion volume.
 
+Required columns where available:
+
+- campaign
+- ad set
+- objective
+- optimization event
+- budget and budget level (CBO / ad set)
+- spend
+- conversions / results
+- cost per result
+- learning status
+- audience / targeting summary
+- date
+
 Recommended additional data:
 
 - Naming convention.
@@ -59,6 +73,17 @@ Recommended additional data:
 5. Propose keep, merge, pause candidate, rename, or clarify role.
 6. Build a target structure for human review.
 
+## Decision rules
+
+Every threshold is a starting heuristic; recalibrate to the account and say which threshold you adjusted.
+
+- Underpowered ad set: fewer than ~50 optimization events per week [heuristic tied to exiting learning], or a daily budget below ~1x target CPA. Persistent "learning limited" status is the platform saying the same thing.
+- Fragmentation flag: more ad sets than the account's weekly conversions divided by 50 can feed [heuristic]. An account with 100 conversions per week supports roughly 2 well-fed ad sets per campaign goal, not 15.
+- Duplicate test flag: two or more ad sets with the same objective, overlapping audiences, and the same funnel stage, each below the underpowered line - merge candidates.
+- Merge is recommended only when the combined ad set would clear the ~50 events per week line; merging two starving ad sets into one starving ad set is not a fix.
+- Keep separate despite low volume when there is a named business reason: budget ownership, reporting lines, regulatory geo separation, or genuinely different offers.
+- Migration mechanics every merge plan must state: what happens to audience exclusions, past learnings (reset on significant edits), budget carry, and naming - and a max of 2-3 structural changes per week so reads stay clean [heuristic].
+
 ## Output format
 
 ### Structure verdict
@@ -77,6 +102,10 @@ Proposed simplified structure with rationale.
 ### Migration plan
 
 Low-risk order of cleanup.
+
+### Missing data
+
+Fields that would change the verdict (learning status, audience overlap, business constraints not visible in exports).
 
 ## Practical example
 

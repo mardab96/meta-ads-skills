@@ -63,6 +63,19 @@ Recommended additional data:
    - customer support response
 5. Flag comments requiring human response.
 
+## Decision rules
+
+Comments are qualitative signal; these rules keep the output honest about how much signal there is. Thresholds are heuristics; say which one you adjusted.
+
+- Recurring theme: at least 3 independent commenters (not one thread) raising the same objection [heuristic]. One vivid comment is an anecdote and is labeled as such.
+- Sample floor: below ~30 genuine (non-spam) comments, the whole output is labeled "directional, low sample" and no fix recommendation gets high confidence [heuristic].
+- Fix routing by cluster share of genuine comments [heuristic]:
+  - 20%+ of genuine comments -> the ad or landing page failed to explain it; recommend an ad copy or landing page change.
+  - 5-20% -> FAQ or comment-reply material; not worth changing the ad yet.
+  - Under 5% -> log it, do nothing.
+- A cluster earns "change the offer" only when the objection is about the offer's substance (price, terms, availability) AND it is the largest cluster - copy fixes come first everywhere else.
+- Human response queue: legal / medical / finance claims, angry customers with an unresolved support issue, and questions from plausibly high-intent buyers. Everything else can wait for batch replies.
+
 ## Output format
 
 ### Objection summary
@@ -81,6 +94,10 @@ Comments that need manual attention.
 ### Copy and FAQ updates
 
 Suggested clarifications.
+
+### Missing data
+
+What limits the read: sample size, missing ad-level performance for commented ads, or missing landing page context.
 
 ## Practical example
 

@@ -59,6 +59,25 @@ Recommended additional data:
 5. Identify what needs approval.
 6. Identify what should not change yet.
 
+For the week-over-week arithmetic on long exports, run `../scripts/wow_delta.py` - it computes the deltas and applies the noise band, so the readout starts from flagged rows instead of eyeballed ones.
+
+## Decision rules
+
+Every threshold is a starting heuristic; recalibrate to the account's volume and say which threshold you adjusted.
+
+What earns a row in "What changed":
+
+- A metric enters the table only if it moved more than +/-15% week over week AND rests on at least 30 conversions per week (or 1,000 clicks for pre-conversion metrics) [heuristic].
+- Below 30 conversions per week, widen the noise band to +/-25% and compare against a 4-week average instead of last week alone [heuristic].
+- A change that mirrors a known cause (budget change, promo start or end, tracking edit) is reported as that cause, with the driver marked at high confidence only when the timing matches.
+- Spend changes are always reported regardless of the band - the reader owns the budget.
+
+Confidence labels in the driver column:
+
+- High: timing matches a logged change, and the metric pattern fits (for example, CPM up after budget up).
+- Medium: pattern fits but no logged change explains it.
+- Low: several drivers fit equally; say so and name the next check instead of picking one.
+
 ## Output format
 
 ### Executive summary
@@ -88,7 +107,26 @@ Data needed for a better decision.
 
 ## Practical example
 
-User provides weekly exports and change notes. CPA increased 18%, but conversion volume is within normal range. CPM increased 22% after a budget increase, while CTR stayed stable. One creative group shows early fatigue but not enough data to kill. Output explains that performance softened mainly from auction cost and budget change, recommends monitoring for 72 hours, requests approval for two replacement creatives, and does not recommend pausing the campaign.
+Input (change log: budget +25% on Prospecting from Tuesday; target CPA $50):
+
+| Metric | Last week | This week | Change | Volume base |
+|---|---:|---:|---:|---|
+| Spend | $4,000 | $5,000 | +25% | - |
+| Conversions | 82 | 84 | +2% | 84 conv |
+| CPA | $48.80 | $59.50 | +22% | 84 conv |
+| CPM | $12.10 | $14.80 | +22% | - |
+| CTR | 1.8% | 1.75% | -3% | 6,100 clicks |
+| Frequency | 2.4 | 2.9 | +21% | - |
+
+Filled "What changed" table (the noise-band rule applied - CTR does not get a row, it moved 3%):
+
+| Metric / area | Change | Likely driver | Confidence |
+|---|---|---|---|
+| Spend | +25% | Planned budget increase Tuesday | High |
+| CPA | +22% ($48.80 -> $59.50) | Auction cost from the budget step, not conversion loss: CPM +22% with CTR flat, conversions held | High |
+| Frequency | 2.4 -> 2.9 | More budget into the same audience | Medium |
+
+Executive summary states: conversions held at 84 while cost per result rose with the budget step; this is a price effect, not a demand or creative effect. Recommendation: hold 72h before judging the new budget level; do not roll back yet because volume held. Approval requested for two replacement creatives on the early-fatigue concept. Not changing: bids, structure, the fatigued concept (insufficient data to kill).
 
 ## Guardrails
 

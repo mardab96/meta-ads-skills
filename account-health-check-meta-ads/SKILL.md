@@ -75,14 +75,30 @@ Required columns where available:
 4. Identify campaigns or ad sets with high spend and weak outcome quality.
 5. Check learning status, delivery status, and insufficient-volume patterns.
 6. Compare CTR, CPM, CPC, CVR, CPA, ROAS, frequency, and conversion volume.
-7. Separate likely issue type:
-   - tracking or signal quality
-   - creative fatigue
-   - budget allocation
-   - offer / landing page
-   - account structure
-   - normal noise / insufficient data
+7. Separate likely issue type using the attribution tree in Decision rules.
 8. Return the few issues worth human attention first.
+
+## Decision rules
+
+Every threshold is a starting heuristic, not a Meta rule. Recalibrate to account volume and say which threshold you adjusted.
+
+Driver attribution tree - apply in order, stop at the first match:
+
+1. Conversions dropped, clicks stable, AND a tag / landing page / consent change happened in the window -> tracking or signal quality. Verify before anything else.
+2. Account below ~30 conversions in the last 30 days, or the delta rests on fewer than 10 conversions -> insufficient data. Do not attribute a driver; widen the window.
+3. CPM up 20%+ while CTR is within 15% of baseline -> auction cost or budget change. Check recent budget moves and seasonality first.
+4. CTR down 25%+ vs baseline while CPM is roughly stable, frequency rising -> creative fatigue. Route to the creative fatigue review.
+5. CVR down 25%+ while CTR and CPM are stable -> landing page or offer. Ask what changed on the page.
+6. Spend share concentrated (one campaign holding 70%+ of spend) with weak outcome share -> budget allocation or structure. Route to reallocation or structure audit.
+7. None of the above at material size -> normal noise. Say so instead of inventing a driver.
+
+Materiality gate: a metric change only enters the priority table if it moved 15%+ vs baseline AND rests on at least 10 conversions or 500 clicks [heuristic]. Below that, list it under "What not to touch yet".
+
+### Vertical notes
+
+- Ecommerce: judge on ROAS and product mix, expect purchase lag of 1-7 days; a post-promo ROAS drop with stable CPM is usually offer mix, not account health.
+- Lead gen: Meta-reported leads are volume, not value; without a CRM qualification rate, cap confidence at medium for any "healthy" verdict.
+- App: SKAN / AEM postbacks delay and aggregate; day-level attribution trees above do not apply cleanly below the privacy threshold.
 
 ## Output format
 
