@@ -68,8 +68,9 @@ def main():
     outcome_name = "value" if any(d["val"] for d in agg.values()) else "conversions"
 
     print(f"Outcome basis: {outcome_name}. Volume gate: >= {a.min_spend_share*100:.0f}% spend share "
-          f"or >= {a.min_conv:.0f} conversions [heuristic]. "
-          f"Blended CPA: {blended_cpa:.2f}\n" if blended_cpa else "\n")
+          f"or >= {a.min_conv:.0f} conversions [heuristic].")
+    print(f"Blended CPA: {blended_cpa:.2f}\n" if blended_cpa
+          else "Blended CPA: not computable (zero conversions in the export)\n")
     print("| Placement | Spend share | Outcome share | Index (out/spend) | CPA | Gate verdict |")
     print("|---|---:|---:|---:|---:|---|")
     for name, d in sorted(agg.items(), key=lambda kv: -kv[1]["spend"]):

@@ -81,8 +81,8 @@ Classification criteria:
 |---|---|
 | Scale candidate | CPA at least 15% below target (or ROAS 15% above) sustained for 14+ days, with 30+ conversions in the window, learning complete, no major edit in the last 72h [heuristic] |
 | Hold | Within +/-15% of target, or fewer than 30 conversions in the window regardless of CPA [heuristic] |
-| Reduce candidate | CPA 25-50% above target with 30+ conversions, after the conversion lag window has closed [heuristic] |
-| Pause candidate | Spend of 3x target CPA or more with zero conversions after the lag window, or CPA more than 2x target with 20+ conversions [heuristic] |
+| Reduce candidate | CPA 25-100% above target with 30+ conversions, after the conversion lag window has closed [heuristic] |
+| Pause candidate | Spend of 3x target CPA or more with zero conversions after the lag window, or CPA more than 2x target with 20+ conversions (this check outranks the 30-conversion floor) [heuristic] |
 | Needs more data | Fewer than 30 conversions in the window, still in learning, or a major edit inside the last 72h |
 
 Movement rules:

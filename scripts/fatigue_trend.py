@@ -128,10 +128,15 @@ def main():
         freq_up = rel(dr["freq"], db["freq"])
         cpm_move = rel(dr["cpm"], db["cpm"])
         cpa_ok = dr["cpa"] is not None and dr["cpa"] <= a.target_cpa
+        spend_total = spend_r + b.get("spend", 0)
         if spend_r < 3 * a.target_cpa or conv_r < 10:
             status = "insufficient data"
-        elif dr["cpa"] is not None and dr["cpa"] > 1.2 * a.target_cpa and \
+        elif spend_total >= 3 * a.target_cpa and \
+                dr["cpa"] is not None and dr["cpa"] > 1.2 * a.target_cpa and \
                 (db["cpa"] is None or db["cpa"] > 1.2 * a.target_cpa):
+            # skill rule: never within 20% of target after 3x target CPA in
+            # spend across both windows; a formerly-winning ad does not land
+            # here because its baseline CPA was inside the 1.2x band
             status = "kill candidate (never worked)"
         elif cpa_ok and (ctr_drop is None or ctr_drop > -0.20):
             status = "winner"
@@ -161,7 +166,9 @@ def main():
               f"| {fmt(dr['cpm'])}/{fmt(db['cpm'])} "
               f"| {fmt(dr['cpa'])}/{fmt(db['cpa'])} | {status} |")
     print("\nGroup rows are per ad unless --col-group was given; concept grouping "
-          "and replacement angles stay with the skill.")
+          "and replacement angles stay with the skill. The 'replace' escalation "
+          "(tired winner with no recovery after 14 days) also stays with the "
+          "skill - this script cannot see duration without a longer export.")
 
 if __name__ == "__main__":
     main()

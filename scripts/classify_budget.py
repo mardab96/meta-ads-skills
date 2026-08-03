@@ -92,12 +92,13 @@ def main():
         cpa = spend / conv if conv else None
         if conv == 0 and spend >= 3 * a.target_cpa:
             cls, step = "pause candidate", "pause after lag-window check"
+        elif cpa is not None and cpa > 2 * a.target_cpa and conv >= 20:
+            # outranks the min-conv floor by design (see skill Decision rules)
+            cls, step = "pause candidate", "review before pausing"
         elif conv < a.min_conv:
             cls, step = "needs more data", "hold; widen window"
         elif cpa <= a.target_cpa * (1 - a.scale_edge):
             cls, step = "scale candidate", f"+{a.max_step*100:.0f}% if stable 14d and learning complete"
-        elif cpa > 2 * a.target_cpa and conv >= 20:
-            cls, step = "pause candidate", "review before pausing"
         elif cpa > a.target_cpa * 1.25:
             cls, step = "reduce candidate", f"-{a.max_step*100:.0f}% after lag window"
         else:

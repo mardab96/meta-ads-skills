@@ -89,8 +89,8 @@ Status assignment (evidence to label):
 | Status | Criteria |
 |---|---|
 | Winner | CPA at or below target, CTR within 20% of its own 30-day baseline, regardless of frequency [heuristic] |
-| Tired winner | Previously at or below target CPA for 14+ days AND frequency up 50%+ vs its own baseline AND CTR down 30%+ vs baseline AND CPM roughly stable (within +/-15%, so it is not an auction story) [heuristic] |
-| Watchlist | Meets 2 of the 3 tired-winner signals (frequency, CTR decline, CPA drift) but not all, or the decline is younger than 7 days [heuristic] |
+| Tired winner | Previously at or below target CPA for 14+ days AND all 3 fatigue signals: frequency up 50%+ vs its own baseline, CTR down 30%+ vs baseline, CPA drift 20%+ vs baseline - with CPM roughly stable (within +/-15%) as the qualifier that rules out an auction story [heuristic] |
+| Watchlist | Meets 2 of the 3 fatigue signals (frequency, CTR decline, CPA drift) but not all, or the decline is younger than 7 days [heuristic] |
 | Replace | Tired-winner criteria met for 14+ days with no recovery after spend was stable [heuristic] |
 | Kill candidate | Never reached within 20% of target CPA after spending 3x target CPA - that is not fatigue, it never worked [heuristic] |
 | Insufficient data | Less than 3x target CPA in spend, or fewer than 10 conversions attributable to the concept in the window [heuristic] |

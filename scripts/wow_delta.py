@@ -68,9 +68,9 @@ def main():
 
     def derive(t):
         d = dict(t)
-        d["CPA"] = t["spend"] / t["conversions"] if t.get("conversions") else None
-        d["CTR%"] = 100 * t["clicks"] / t["impressions"] if t.get("impressions") else None
-        d["CPM"] = 1000 * t["spend"] / t["impressions"] if t.get("impressions") else None
+        d["CPA"] = t["spend"] / t["conversions"] if t.get("spend") and t.get("conversions") else None
+        d["CTR%"] = 100 * t["clicks"] / t["impressions"] if t.get("clicks") and t.get("impressions") else None
+        d["CPM"] = 1000 * t["spend"] / t["impressions"] if t.get("spend") and t.get("impressions") else None
         return d
 
     p, c = derive(prev), derive(cur)
