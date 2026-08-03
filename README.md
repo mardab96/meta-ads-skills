@@ -1,4 +1,4 @@
-# Meta Ads Performance Marketing Skills
+# 10 Claude Skills for Meta Ads
 
 A pack of 10 production-ready Claude Skills that help performance marketers run rigorous Meta Ads diagnostics from exports: account health, creative fatigue, Advantage+ diagnosis, Pixel and Conversions API signal quality, budget reallocation, placement breakdowns, campaign structure, offer-angle extraction, comment mining, and weekly readouts.
 
@@ -31,7 +31,8 @@ These skills are intentionally conservative. They work with Meta Ads exports tod
 
 ```bash
 git clone https://github.com/mardab96/meta-ads-skills.git
-cp -r meta-ads-skills/* ~/.claude/skills/
+mkdir -p ~/.claude/skills
+cp -r meta-ads-skills/*-meta-ads ~/.claude/skills/
 ```
 
 ### Option B - Other Claude environments
