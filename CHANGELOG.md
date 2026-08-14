@@ -1,5 +1,38 @@
 # Changelog
 
+## [2.0.0] - 2026-08-19
+
+### Added
+
+Ten skills that read the signal and the money underneath the account. The first ten
+all read what the account reported; these read whether the report can be trusted and
+whether the revenue behind it is profit.
+
+- `attribution-credit-check-meta-ads` - compare reported conversions against the business count and a stricter attribution window
+- `modeled-conversions-review-meta-ads` - separate observed conversions from estimated ones before betting on them
+- `conversion-lag-read-meta-ads` - measure how long results keep filling in, and set a waiting rule
+- `ios-reporting-gap-meta-ads` - size the iOS reporting blind spot and set event priority against it
+- `click-to-session-gap-meta-ads` - split the click-to-session gap into a load problem and a measurement problem
+- `incrementality-test-design-meta-ads` - design a holdout or geo test the account can actually read
+- `campaign-margin-check-meta-ads` - rank campaigns on contribution margin instead of ROAS
+- `audience-overlap-review-meta-ads` - find overlap, stale lists and missing exclusions
+- `lookalike-source-review-meta-ads` - judge the seed, because the model copies whatever it is given
+- `learning-phase-check-meta-ads` - check whether structure and budget let any ad set exit learning
+
+### Changed
+
+- README title and count from 10 to 20, with the full skill table.
+
+### Notes
+
+Every threshold in the new skills is labelled as a heuristic to recalibrate per account,
+not as a published Meta rule. Three skills refuse to answer under stated conditions rather
+than return a number the data cannot support: incrementality declines to design a holdout
+the account cannot read, campaign margin prints break-even ROAS instead of a margin
+percentage when cost lines are missing, and modeled conversions reports a range instead of
+a point below the learning volume threshold.
+
+
 All notable changes to this pack are documented here. Format follows Keep a
 Changelog, loosely.
 

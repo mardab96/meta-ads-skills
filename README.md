@@ -1,6 +1,6 @@
-# 10 Claude Skills for Meta Ads
+# 20 Claude Skills for Meta Ads
 
-A pack of 10 production-ready Claude Skills that help performance marketers run rigorous Meta Ads diagnostics from exports: account health, creative fatigue, Advantage+ diagnosis, Pixel and Conversions API signal quality, budget reallocation, placement breakdowns, campaign structure, offer-angle extraction, comment mining, and weekly readouts.
+A pack of 20 production-ready Claude Skills that help performance marketers run rigorous Meta Ads diagnostics from exports: account health, creative fatigue, Advantage+ diagnosis, Pixel and Conversions API signal quality, budget reallocation, placement breakdowns, campaign structure, offer-angle extraction, comment mining, and weekly readouts. The second ten go underneath the account and read the signal and the money instead: attribution credit, modeled conversions, conversion lag, the iOS reporting gap, the click-to-session gap, incrementality, contribution margin, audience overlap, lookalike seed quality, and learning phase capacity.
 
 Each skill is a self-contained `SKILL.md` with explicit triggers, required inputs, analysis workflow, decision rules with unit-carrying thresholds (every threshold labeled as a heuristic to recalibrate per account), a practical example, output format, and guardrails. Four number-heavy skills additionally ship a deterministic helper in `scripts/` (budget classification, week-over-week deltas, fatigue trends, placement efficiency), so the arithmetic on long CSVs is computed, not eyeballed. Drop them into Claude Code and they activate automatically when their use case matches the conversation.
 
@@ -20,6 +20,16 @@ These skills are intentionally conservative. They work with Meta Ads exports tod
 | 8 | Offer and Angle Extraction | `offer-angle-extraction-meta-ads` | Extract the actual hypotheses being tested across ads and creatives |
 | 9 | Comment and Objection Mining | `comment-objection-mining-meta-ads` | Turn comments into objections, FAQ gaps, creative notes, and landing page fixes |
 | 10 | Weekly Performance Readout | `weekly-performance-readout-meta-ads` | Produce a weekly Meta Ads update with facts, hypotheses, next actions, and approval asks |
+| 11 | Is Meta Taking Credit It Did Not Earn | `attribution-credit-check-meta-ads` | Compare reported conversions against the business count and a stricter window |
+| 12 | Which Sales Meta Guessed | `modeled-conversions-review-meta-ads` | Separate observed conversions from estimated ones before betting on them |
+| 13 | When Today's Numbers Stop Moving | `conversion-lag-read-meta-ads` | Measure how long results keep filling in, and set a waiting rule |
+| 14 | What iPhone Users Are Not Telling You | `ios-reporting-gap-meta-ads` | Size the iOS reporting blind spot and set event priority against it |
+| 15 | Where Clicks Go Missing | `click-to-session-gap-meta-ads` | Split the click-to-session gap into a load problem and a measurement problem |
+| 16 | Would These Sales Happen Anyway | `incrementality-test-design-meta-ads` | Design a holdout or geo test the account can actually read |
+| 17 | Which Campaigns Actually Make Money | `campaign-margin-check-meta-ads` | Rank campaigns on contribution margin instead of ROAS |
+| 18 | Audiences Fighting Each Other | `audience-overlap-review-meta-ads` | Find overlap, stale lists and missing exclusions |
+| 19 | What Your Lookalike Is Copying | `lookalike-source-review-meta-ads` | Judge the seed, because the model copies whatever it is given |
+| 20 | Why Nothing Leaves Learning | `learning-phase-check-meta-ads` | Check whether the structure and budget let any ad set exit learning |
 
 ## How to install
 
