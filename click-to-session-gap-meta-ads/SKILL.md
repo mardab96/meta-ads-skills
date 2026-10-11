@@ -1,6 +1,6 @@
 ---
 name: click-to-session-gap-meta-ads
-description: Explains why Meta reports more clicks than the website records sessions, and separates the part that is normal measurement difference from the part that is a broken landing experience. Use when Meta clicks and site sessions disagree, when cost per click looks fine but nothing arrives, or before blaming creative for a traffic problem.
+description: Investigates differences between Meta website clicks, landing page views and site sessions using aligned metric scopes, redirect traces and collection diagnostics. Use when Meta clicks and site sessions disagree, when cost per click looks fine but nothing arrives, or before blaming creative for a traffic problem.
 ---
 
 # Where Clicks Go Missing - Meta Ads
@@ -33,43 +33,43 @@ Recommended additional data:
 
 ## Before analysis
 
-1. Use Meta's landing page views, not link clicks, as the closest comparable figure. Comparing link clicks to sessions overstates the gap by design.
-2. Confirm the site-side number is filtered to the same source and the same closed range.
+1. Compare website landing page views alongside eligible website clicks and sessions. Establish each metric definition before treating differences as loss; none is interchangeable with the others.
+2. Confirm the same closed range, timezone, destination population and site-side session source/medium filter. Record the Meta click metric and reporting basis; exclude on-platform destinations from a website comparison. Sessions are not unique clicks: repeated clicks can share a session, and session source attribution can differ from event attribution.
 3. Open the destination URL yourself and note redirects, parameter stripping and load behaviour.
-4. Confirm the tracking parameter survives the redirect. If it does not, the sessions exist but arrive unattributed.
+4. Check whether required attribution parameters survive each redirect and whether an allowed first-party mechanism captured them earlier. Parameter loss can cause source misclassification; it does not prove that sessions were recorded. Check consent, tag loading and source classification separately.
 
 ## Analysis workflow
 
 1. Lay out four numbers: link clicks, landing page views, site sessions from that source, and site sessions total.
-2. Compute two separate ratios: landing page views over link clicks, and sessions over landing page views.
-3. Attribute the first ratio to abandonment before load, which is speed, weight and in-app browser behaviour.
-4. Attribute the second ratio to measurement, which is parameter loss, consent blocking and cross-domain breaks.
-5. Check whether the gap is uniform or concentrated on one destination. Concentrated points at the page, not the platform.
-6. Name which of the two problems is bigger and therefore which fix comes first.
+2. Compute landing page views over eligible website clicks, and source-filtered sessions over landing page views. Name the denominator used; use a matching outbound-click metric when available. Report N/A for a zero or unavailable denominator. These are aggregate comparison ratios, not person-level funnel completion rates.
+3. Treat a low landing-page-view ratio as a hypothesis to investigate: speed, abandonment, in-app browser behaviour, destination mismatch, consent and missing or delayed Meta measurement can all contribute. Verify actual loading and event delivery on representative devices before assigning a cause.
+4. Investigate the session ratio using redirect traces, consent states, tag diagnostics, cross-domain setup and session counting/source rules. A high or low ratio alone cannot isolate parameter loss, consent blocking or a tracking defect.
+5. Check whether the gap is uniform or concentrated on one destination. A concentration narrows the investigation to that destination and its traffic mix; it does not establish the cause.
+6. Rank the checks or fixes by corroborating evidence and business impact. If only aggregates are available, report competing hypotheses and the next distinguishing check rather than a confirmed cause.
 
 ## Decision rules
 
-Every threshold is a starting heuristic, not a Meta rule. Recalibrate per account.
+Every threshold is a starting heuristic, not a Meta rule or proof of causation. Apply only after scope checks; recalibrate per account and include an inconclusive verdict where neither evidence nor rubric supports a diagnosis.
 
 | Verdict | Criteria |
 |---|---|
-| Normal difference | Landing page views 80%+ of link clicks [heuristic], and sessions 70%+ of landing page views |
-| Load problem first | Landing page views under 70% of link clicks, regardless of the second ratio |
-| Measurement problem first | Landing page views 80%+ of link clicks, but sessions under 50% of landing page views |
+| No immediate anomaly in these ratios | Landing page views 80%+ of eligible website clicks [heuristic], and sessions 70%+ of landing page views |
+| Investigate load and Meta measurement first | Landing page views under 70% of eligible website clicks; verify load and event collection before diagnosing |
+| Investigate session measurement and attribution first | Landing page views 80%+ of eligible website clicks, but sessions under 50% of landing page views |
 
-Redirect rule: if the destination URL redirects and the tracking parameter does not survive to the final address, stop and fix that first. Every ratio below it is unreadable until it is fixed.
+Redirect rule: record verified parameter loss and its affected source filter. Prioritize a repair when the parameter is required and was not captured earlier by an allowed mechanism. Retain usable total-session and load evidence; label affected source comparisons as unreliable.
 
-Attribution rule: this skill explains the traffic step only. A healthy click-to-session ratio with no sales is a landing page or offer problem, and belongs outside this pack.
+Attribution rule: this skill explains the traffic step only. A healthy ratio does not establish conversion tracking or explain a lack of sales. Investigate downstream outcome collection and the landing page or offer separately.
 
 ## Output format
 
 ### Gap verdict
 
-Normal, load problem first, or measurement problem first.
+No immediate ratio anomaly, investigate load/Meta measurement, investigate session measurement/attribution, or inconclusive. Distinguish observed defects from hypotheses.
 
 ### Four-number ladder
 
-| Step | Count | Share of previous step |
+| Metric and scope | Count | Comparison ratio (not a user funnel) |
 |---|---:|---:|
 
 ### Destination check
@@ -79,7 +79,7 @@ Normal, load problem first, or measurement problem first.
 
 ### Fix order
 
-What to fix first, and what will stop being measurable until it is fixed.
+Prioritized checks or verified fixes, with evidence and the comparisons affected by each defect.
 
 ### Missing data
 
@@ -87,7 +87,7 @@ What could not be observed, and which ratio it leaves unreadable.
 
 ## Practical example
 
-Link clicks 4,100, landing page views 3,780, sessions from that source 1,610. The first ratio is healthy at 92%, the second is 43%. The destination URL redirects from a campaign short link and drops its query string on the way. Output: measurement problem first, redirect named as the cause, and a note that the creative is not the problem here despite the flat reported result.
+Link clicks 4,100, landing page views 3,780, sessions from that source 1,610. The first ratio is 92%, the second is 43%. The destination URL redirects from a campaign short link and drops its query string on the way. Output: investigate session measurement/attribution first; parameter stripping is a verified defect if no earlier allowed capture exists. Its contribution to the session gap needs a controlled redirect/tag check. These aggregates do not establish whether creative performance is sound.
 
 ## Guardrails
 
@@ -95,3 +95,9 @@ Link clicks 4,100, landing page views 3,780, sessions from that source 1,610. Th
 - Do not blame creative for a gap that sits between click and load.
 - Do not recommend tracking changes without opening the destination URL.
 - Do not extend into landing page conversion quality. This skill ends when the visitor arrives.
+- Do not bypass consent to make platform counts agree, or send identifiers without the required consent.
+- Do not treat agreement between counts as proof that both systems are collecting correctly.
+
+## Measurement reference
+
+[Google Analytics session definitions](https://support.google.com/analytics/answer/9191807) explain session counting and session attribution. Record the corresponding current Meta metric definition with each export; do not treat clicks, landing page views and sessions as interchangeable units.
